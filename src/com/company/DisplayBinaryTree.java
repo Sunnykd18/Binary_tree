@@ -36,7 +36,7 @@ public class DisplayBinaryTree {
         Display(node.left);
         Display(node.right);
     }
-    public static void main(String []args)throws Exception{
+    public static void main(String []args){
         Integer [] arr = {50, 25, 12, null, null, 37, 30, null, null, null, 75, 62, null, 70, null, null, 87, null, null};
         Node root = new Node(arr[0], null,null);
         Pair rtp = new Pair(root, 1);
