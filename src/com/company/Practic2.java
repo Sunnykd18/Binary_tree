@@ -1,0 +1,141 @@
+package com.company;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
+
+public class Practic2 {public static class Node{
+    int data;
+    SizeSumMaxHeight.Node left;
+    SizeSumMaxHeight.Node right;
+
+    Node(int data, SizeSumMaxHeight.Node left, SizeSumMaxHeight.Node right){
+        this.data = data;
+        this.left = left;
+        this.right = right;
+    }
+}
+    public static class Pair{
+        SizeSumMaxHeight.Node node;
+        int state;
+
+        Pair(SizeSumMaxHeight.Node node, int state){
+            this.node = node;
+            this.state = state;
+        }
+    }
+    public static SizeSumMaxHeight.Node construct(Integer[] arr) {
+        SizeSumMaxHeight.Node root = new SizeSumMaxHeight.Node(arr[0], null, null);
+        SizeSumMaxHeight.Pair rtp = new SizeSumMaxHeight.Pair(root, 1);
+
+        Stack<SizeSumMaxHeight.Pair> st = new Stack<>();
+        st.push(rtp);
+
+        int idx = 0;
+        while (st.size() > 0) {
+            SizeSumMaxHeight.Pair top = st.peek();
+            if (top.state == 1) {
+                idx++;
+                if (arr[idx] != null) {
+                    top.node.left = new SizeSumMaxHeight.Node(arr[idx], null, null);
+                    SizeSumMaxHeight.Pair lp = new SizeSumMaxHeight.Pair(top.node.left, 1);
+                    st.push(lp);
+                } else {
+                    top.node.left = null;
+                }
+
+                top.state++;
+            } else if (top.state == 2) {
+                idx++;
+                if (arr[idx] != null) {
+                    top.node.right = new SizeSumMaxHeight.Node(arr[idx], null, null);
+                    SizeSumMaxHeight.Pair rp = new SizeSumMaxHeight.Pair(top.node.right, 1);
+                    st.push(rp);
+                } else {
+                    top.node.right = null;
+                }
+
+                top.state++;
+            } else {
+                st.pop();
+            }
+        }
+
+        return root;
+    }
+    public static void Display(SizeSumMaxHeight.Node node){
+        if (node == null){
+            return;
+        }
+        String str = "";
+        str += node.left == null? ".": node.left.data + "";
+        str += "<-" + node.data + "->";
+        str += node.right == null? ".": node.right.data + "";
+        System.out.println(str);
+
+        Display(node.left);
+        Display(node.right);
+    }
+    public static int size(SizeSumMaxHeight.Node node){
+        if (node == null){
+            return 0;
+        }
+        int ls = size(node.left);
+        int rs = size(node.right);
+        int ts = ls + rs + 1;
+        return ts;
+    }
+    public static int sum(SizeSumMaxHeight.Node node){
+        if (node == null){
+            return 0;
+        }
+        int lsm = sum(node.left);
+        int rsm = sum(node.left);
+        int tsm = lsm + rsm + node.data;
+        return tsm;
+    }
+    public static int max(SizeSumMaxHeight.Node node){
+        if (node == null){
+            return Integer.MIN_VALUE;
+        }
+        int lm = max(node.left);
+        int rm = max(node.left);
+        int tm = Math.max(node.data,Math.max(lm,rm));
+        return tm;
+    }
+    public static int height(SizeSumMaxHeight.Node node){
+        if (node == null){
+            return -1; // -1 for edges;
+        }
+        int lh = height(node.left);
+        int rh = height(node.right);
+        int th = Math.max(lh,rh) + 1;
+        return th;
+    }
+    public static void main(String []args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        Integer[]arr = new Integer[n];
+        String [] values = br.readLine().split(" ");
+        for (int i = 0; i< n ; i++){
+            if (values[i].equals("n") == false){
+                arr[i] = Integer.parseInt(values[i]);
+            }else{
+                arr[i] = null;
+            }
+        }
+        SizeSumMaxHeight.Node root = construct(arr);
+
+        int size = size(root);
+        int sum = sum(root);
+        int max = max(root);
+        int height = height(root);
+        System.out.println(size);
+        System.out.println(sum);
+        System.out.println(max);
+        System.out.println(height);
+        Display(root);
+    }
+
+}
