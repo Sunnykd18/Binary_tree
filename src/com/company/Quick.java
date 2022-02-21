@@ -1,12 +1,15 @@
 package com.company;
 
 public class Quick{
-    public static void main(){
-        int []a = new int[];
 
-
+    public static void Swap(int []a, int i , int j){
+        int temp = a[i];
+        a [i] = a [j];
+        a[j] = temp;
     }
+
     public static int Partition(int l, int h){
+        int []a = new int[8];
         int pivot = a[l];
         int i = l;
         int j = h;
@@ -31,5 +34,10 @@ public class Quick{
             QuickSort(l,pivot-1);
             QuickSort(pivot+1, h);
         }
+    }
+    public static void main(String[] args){
+        int  [] a = {2,6,5,4,3,7,8,9,10};
+        QuickSort(0,10);
+        System.out.println(a);
     }
 }
